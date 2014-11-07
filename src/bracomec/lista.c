@@ -2,12 +2,17 @@
 
 #include "lista.h"
 
-void *Lista_primeiro(Lista *lista)
+int Lista_size(Lista *lista)
+{
+  return lista->tamanho;
+}
+
+void *Lista_first(Lista *lista)
 {
   return lista->primeiro->proximo == NULL ? NULL : lista->primeiro->proximo->valor;
 }
 
-void *Lista_ultimo(Lista *lista)
+void *Lista_last(Lista *lista)
 {
   Elo *el = lista->primeiro->proximo;
   Elo *_atual = NULL;

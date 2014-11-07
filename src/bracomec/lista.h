@@ -18,7 +18,8 @@ typedef int (*funcao_compare)(void *v_lista, void *v_externo);
 struct Elo;
 
 /* Definição de nó da lista */
-typedef struct Elo {
+typedef struct Elo 
+{
   /* Lista base para demais estruturas (singly linked) */
   struct Elo *proximo;
   
@@ -26,18 +27,22 @@ typedef struct Elo {
   void *valor;
 } Elo;
 
-typedef struct Lista {
+typedef struct Lista 
+{
   int tamanho;
 
   /* Elo iniciador stub */
   Elo *primeiro;
 } Lista;
 
+/* Retorna tamanho da lista */
+int Lista_size(Lista *lista);
+
 /* Retorna valor do primeiro elemento da lista */
-void *Lista_primeiro(Lista *lista);
+void *Lista_first(Lista *lista);
 
 /* Retorna valor do último elemento da lista */
-void *Lista_ultimo(Lista *lista);
+void *Lista_last(Lista *lista);
 
 /* Aloca heap memory para uma nova lista */
 Lista *Lista_create();
