@@ -1,4 +1,4 @@
 braco-mecanico
 ==============
 
-estudo sobre estrutura de dados
+Estudo sobre estrutura de dados
