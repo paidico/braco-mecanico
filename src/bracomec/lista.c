@@ -127,7 +127,28 @@ void Lista_unshift(Lista *lista, void *valor)
 
 void *Lista_remove(Lista *lista, void *valor, funcao_compare fc)
 {
-  /**********************************/
-  /* Criar implementação de remoção */
-  /**********************************/
+  int comp;
+  void *aux_valor;
+  Elo *aux_ant;
+  Elo *aux_elo = lista->primeiro;
+  if(aux_elo->proximo != NULL)
+    {
+      do
+	{
+	  aux_ant = aux_elo;
+	  aux_elo = aux_elo->proximo;
+	  comp = fc(aux_elo->valor, valor);
+	} while(aux_elo->proximo && comp != 0);
+
+      if(comp == 0)
+	{
+	  aux_ant->proximo = aux_elo->proximo;
+	  aux_valor = aux_elo->valor;
+	  free(aux_elo);
+	  lista->tamanho--;
+
+	  return aux_valor;
+	}
+    }
+  return NULL;
 }

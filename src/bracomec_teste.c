@@ -57,8 +57,15 @@ int main(int argc, char *argv[])
   Lista_each(ls, imprime);
   printf("total: %d\n", ls->tamanho);
 
-  imprime(Lista_remove(ls, "Pimenta", compara);
+  imprime(Lista_remove(ls, "Marcelino", compara));
+  imprime(Lista_remove(ls, "Cícera", compara));
+  imprime(Lista_remove(ls, "Ci", compara));
+  imprime(Lista_remove(ls, "Sebastião", compara));
   printf("total: %d\n", ls->tamanho);
+  printf("\nvisão final:\n--------------------------\n");
+  Lista_each(ls, imprime);
+  printf("--------------------------\ntotal: %d\n", ls->tamanho);
+
   Lista_destroy(ls);
   return 0;
 }

@@ -1,8 +1,19 @@
 #ifndef _lista_h
 #define _lista_h
 
+/* Ponteiro para função auxiliar que executa ação em cada nó */
 typedef void (*funcao_each)(void *a);
-typedef int (*funcao_compare)(void *a, void *b);
+
+/****************************************************************************/
+/* Ponteiro para função auxiliar que compara valores de nós		    */
+/* Retorno >0:								    */
+/*   Valor de elo da lista (v_lista) maior que valor a comparar (v_externo) */
+/* Retorno <0:								    */
+/*   v_lista menor que v_externo					    */
+/* Retorno 0:								    */
+/*   v_lista igual a v_externo						    */
+/****************************************************************************/
+typedef int (*funcao_compare)(void *v_lista, void *v_externo);
 
 struct Elo;
 
@@ -17,7 +28,9 @@ typedef struct Elo {
 
 typedef struct Lista {
   int tamanho;
-  Elo *primeiro; /* Elo iniciador stub */
+
+  /* Elo iniciador stub */
+  Elo *primeiro;
 } Lista;
 
 /* Retorna valor do primeiro elemento da lista */
