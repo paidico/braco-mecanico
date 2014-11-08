@@ -25,6 +25,12 @@ void *Pilha_pop(Pilha *pilha);
 /* Insere elemento no topo */
 void Pilha_push(Pilha *pilha, void *valor);
 
+int Pilha_is_empty(Pilha *pilha);
+
 void Pilha_each(Pilha *pilha, funcao_each fe);
+
+int Pilha_has_lesser(Pilha *pilha, void *valor, funcao_compare fc);
+int Pilha_has_greater(Pilha *pilha, void *valor, funcao_compare fc);
+int Pilha_has_equal(Pilha *pilha, void *valor, funcao_compare fc);
 
 #endif

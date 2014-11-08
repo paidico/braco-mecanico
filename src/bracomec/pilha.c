@@ -2,6 +2,43 @@
 
 #include "pilha.h"
 
+int generic_comparer(Pilha *pl, void *vl, funcao_compare fc, char acao)
+{
+  if(Pilha_is_empty(pl))
+    {
+      return 0;
+    }
+  Elo *el = pl->base->primeiro;
+  while((el = el->proximo))
+    {
+      swtich(acao)
+      {
+      case 'L':
+	if(fc(el->valor, vl) < 0)
+	  {
+	    return 1;
+	  }
+	break;
+      case 'G':
+	if(fc(el->valor, vl) > 0)
+	  {
+	    return 1;
+	  }
+	break;
+      case 'E':
+	if(fc(el->valor, vl) == 0)
+	  {
+	    return 1;
+	  }
+	break;
+      default:
+	return 0;
+      }
+    }
+
+  return 0;
+}
+
 int Pilha_size(Pilha *pilha)
 {
   return Lista_size(pilha->base);
@@ -42,7 +79,26 @@ void Pilha_push(Pilha *pilha, void *valor)
   Lista_unshift(pilha->base, valor);
 }
 
+int Pilha_is_empty(Pilha *pilha)
+{
+  return Lista_size(pilha->base) == 0;
+}
+
 void Pilha_each(Pilha *pilha, funcao_each fe)
 {
   Lista_each(pilha->base, fe);
 }
+
+int Pilha_has_lesser(Pilha *pilha, void *valor, funcao_compare fc)
+{
+  return generic_comparer(pilha, valor, fc, 'L');
+}
+int Pilha_has_greater(Pilha *pilha, void *valor, funcao_compare fc)
+{
+  return generic_comparer(pilha, valor, fc, 'G');
+}
+int Pilha_has_equal(Pilha *pilha, void *valor, funcao_compare fc)
+{
+  return generic_comparer(pilha, valor, fc, 'G');
+}
+

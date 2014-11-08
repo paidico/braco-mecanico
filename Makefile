@@ -1,11 +1,13 @@
 CC = gcc
 CFLAGS = -g -Wall -Wextra
 
+MAIN = bracomec
+
 SOURCES = $(wildcard src/bracomec/*.c)
 OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
 
-bin/bracomec: src/bracomec_teste.c $(OBJECTS)
-	$(CC) $(CFLAGS) -I./src/bracomec -o $@ $< $(OBJECTS)
+bin/$(MAIN): src/$(MAIN)_teste.c $(OBJECTS)
+	$(CC) $(CFLAGS) -I./src/$(MAIN) -o $@ $< $(OBJECTS)
 
 clean:
-	rm -frv bin/* src/*.o src/**/*.o ./**/**/*~ ./**/*~ *~
+	rm -fv bin/$(MAIN) src/*.o src/**/*.o ./**/**/*~ ./**/*~ *~

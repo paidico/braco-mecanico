@@ -43,6 +43,11 @@ void Fila_enqueue(Fila *fila, void *valor)
   Lista_push(fila->base, valor);
 }
 
+int Fila_is_empty(Fila *fila)
+{
+  return Lista_size(fila->base) == 0;
+}
+
 void Fila_each(Fila *fila, funcao_each fe)
 {
   Lista_each(fila->base, fe);
