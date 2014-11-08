@@ -1,46 +1,34 @@
 #include <stdio.h>
 
 #include "arquivo.h"
-
-void imprime(void *nome);
+#include "braco.h"
 
 int main(int argc, char *argv[])
 {
   int retorno = -1;
 
-  char *in, *out;
+  char *in;
   Arquivo *a = NULL, *b = NULL;
-
-  if(argc != 3)
+  Braco *braco = NULL;
+  if(argc != 2)
     {
-      printf("O programa espera um arquivo de entrada e um de saída.\n");
+      printf("O programa espera um arquivo de entrada.\n");
       goto error;
     }
   in = argv[1];
-  out = argv[2];
   if(!(a = Arquivo_create()) || !Arquivo_read_from(a, in))
     {
       printf("Falha ao criar arquivo \"%s\".\n", in);
       goto error;
     }
-
-  Arquivo_each_line(a, imprime);
-  printf("total: %d\n", Arquivo_count_line(a));
-
   if(!(b = Arquivo_create()))
     {
       goto error;
     }
 
-  Arquivo_append_line(b, "linha a");
-  Arquivo_append_line(b, "linha b");
-  Arquivo_append_line(b, "linha c");
-  Arquivo_append_line(b, Arquivo_get_line(a, 2));
-
-  if(!Arquivo_write_to(b, out))
-    {
-      goto error;
-    }
+  braco = Braco_create(a);
+  Braco_process_start(braco);
+  Braco_write(braco, b);
 
   retorno = 0;
 
@@ -52,6 +40,10 @@ int main(int argc, char *argv[])
   if(b)
     {
       Arquivo_destroy(b);
+    }
+  if(braco)
+    {
+      Braco_destroy(braco);
     }
 
   printf("Programa encerrado.\n");
@@ -65,10 +57,10 @@ int main(int argc, char *argv[])
 /* #include "pilha.h" */
 /* #include "fila.h" */
 
-void imprime(void *nome)
-{
-  printf("|| %s\n", (char *)nome);
-}
+/* void imprime(void *nome) */
+/* { */
+/*   printf("|| %s\n", (char *)nome); */
+/* } */
 
 /* int compara(void *a, void *b) */
 /* { */

@@ -1,5 +1,7 @@
 # -*- mode: gitignore; -*-
 /bin/
+arquivo_entrada.txt
+arquivo_saida.txt
 
 *~
 \#*\#

@@ -3,20 +3,11 @@
 
 #define MAX_BLOCO 25
 
+#include "execucao.h"
 #include "pilha.h"
 #include "fila.h"
 #include "arquivo.h"
 
-typedef enum { OK, IGNORED, EXIT } exec_status;
-
-typedef exec_status (*funcao_exec)(int a, int b);
-
-typedef struct Execucao
-{
-  int a;
-  int b;
-  funcao_exec fx;
-} Execucao;
 
 typedef struct Braco
 {
@@ -27,6 +18,7 @@ typedef struct Braco
 } Braco;
 
 Braco *Braco_create(Arquivo *arquivo);
+void Braco_add_instruction(Braco *braco, Execucao *execucao);
 void Braco_process_start(Braco *braco);
 int Braco_write(Braco *braco, Arquivo *arquivo);
 void Braco_destroy(Braco *braco);

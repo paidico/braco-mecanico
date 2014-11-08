@@ -11,29 +11,29 @@ int generic_comparer(Pilha *pl, void *vl, funcao_compare fc, char acao)
   Elo *el = pl->base->primeiro;
   while((el = el->proximo))
     {
-      swtich(acao)
-      {
-      case 'L':
-	if(fc(el->valor, vl) < 0)
-	  {
-	    return 1;
-	  }
-	break;
-      case 'G':
-	if(fc(el->valor, vl) > 0)
-	  {
-	    return 1;
-	  }
-	break;
-      case 'E':
-	if(fc(el->valor, vl) == 0)
-	  {
-	    return 1;
-	  }
-	break;
-      default:
-	return 0;
-      }
+      switch(acao)
+	{
+	case 'L':
+	  if(fc(el->valor, vl) < 0)
+	    {
+	      return 1;
+	    }
+	  break;
+	case 'G':
+	  if(fc(el->valor, vl) > 0)
+	    {
+	      return 1;
+	    }
+	  break;
+	case 'E':
+	  if(fc(el->valor, vl) == 0)
+	    {
+	      return 1;
+	    }
+	  break;
+	default:
+	  return 0;
+	}
     }
 
   return 0;
