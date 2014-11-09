@@ -12,6 +12,7 @@
 typedef struct Braco
 {
   int n;
+  Bloco *blocos[MAX_BLOCO];
   Pilha *posicoes[MAX_BLOCO];
   Pilha *auxiliar;
   Fila *instrucoes;

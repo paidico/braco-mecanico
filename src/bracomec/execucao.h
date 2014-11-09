@@ -2,6 +2,7 @@
 #define _execucao_h
 
 #include "bloco.h"
+#include "pilha.h"
 
 typedef enum { OK, IGNORED, EXIT } exec_status;
 

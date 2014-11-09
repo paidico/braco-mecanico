@@ -3,7 +3,7 @@
 
 typedef struct Bloco
 {
-  const int pos_original;
+  int pos_original;
   int pos_atual;
   int valor;
 } Bloco;

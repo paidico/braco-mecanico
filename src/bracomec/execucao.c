@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "execucao.h"
 
 Execucao *Execucao_create(Bloco *a, Bloco *b, funcao_exec fx)

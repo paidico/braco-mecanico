@@ -99,6 +99,6 @@ int Pilha_has_greater(Pilha *pilha, void *valor, funcao_compare fc)
 }
 int Pilha_has_equal(Pilha *pilha, void *valor, funcao_compare fc)
 {
-  return generic_comparer(pilha, valor, fc, 'G');
+  return generic_comparer(pilha, valor, fc, 'E');
 }
 

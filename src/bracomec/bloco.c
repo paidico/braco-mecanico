@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "bloco.h"
 
 Bloco *Bloco_create(int pos)
