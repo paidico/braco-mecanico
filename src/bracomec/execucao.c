@@ -2,12 +2,13 @@
 
 #include "execucao.h"
 
-Execucao *Execucao_create(Bloco *a, Bloco *b, funcao_exec fx)
+Execucao *Execucao_create(Bloco *a, Bloco *b, funcao_exec fx, char *tx)
 {
   Execucao *ex = calloc(1, sizeof(Execucao));
   ex->a = a;
   ex->b = b;
   ex->fx = fx;
+  ex->texto = tx;
 
   return ex;
 }

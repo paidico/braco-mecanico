@@ -11,7 +11,7 @@ int compare_block_stack(void *a, void *b)
 
 int validate_exec_a_b(int n, Pilha **esteira, Bloco *a, Bloco *b)
 {
-  if(a->valor == b->valor)
+  if(!a || !b || a->valor == b->valor)
     {
       return 0;
     }
@@ -45,17 +45,16 @@ void move_block_from_to(Pilha **esteira, Bloco *bloco, int destino)
 void clear_blocks_from_top(Pilha **esteira, Bloco *bloco, int destino)
 {
   int n_esteira = bloco->pos_atual;
-  Bloco *aux = Pilha_pop(esteira[n_esteira]);
+  Bloco *aux;
 
-  if(aux->valor != bloco->valor)
+  while((aux = Pilha_pop(esteira[n_esteira]))
+	&& aux->valor != bloco->valor)
     {
       Pilha_push(esteira[n_esteira], aux);
       clear_blocks_from_top(esteira, aux, aux->pos_original);
     }
-  else
-    {
-      move_block_from_to(esteira, aux, destino);    
-    }
+
+  move_block_from_to(esteira, aux, destino);
 }
 
 exec_status move_a_over_b(int n_esteira, Pilha **esteira, Bloco *a, Bloco *b)
@@ -121,14 +120,14 @@ exec_status find_greatest(int n_esteira, Pilha **esteira, Bloco *a, Bloco *b)
 {
   int i, j, highest = 0, greatest = 0;
   Pilha *pl = Pilha_create();
-  a = Bloco_create(0);
-  b = a;
+  b = Bloco_create(0);
   for(i = 0; i < n_esteira; i++)
     {
       if((j = Pilha_size(esteira[i])) > highest)
 	{
 	  highest = j;
 	  greatest = 0;
+	  a = b;
 	  if(Pilha_has_greater(esteira[i], a, compare_block_stack))
 	    {
 	      while(Pilha_size(esteira[i]))
@@ -141,15 +140,17 @@ exec_status find_greatest(int n_esteira, Pilha **esteira, Bloco *a, Bloco *b)
 		}
 	      while(Pilha_size(pl))
 		{
-		  if(greatest == ((Bloco *)Pilha_pop_to(pl, esteira[i]))->valor)
-		    {
-		      Pilha_pop(esteira[i]);
-		    }
+		  Pilha_pop_to(pl, esteira[i]);
+		  /* if(greatest == ((Bloco *)Pilha_pop_to(pl, esteira[i]))->valor) */
+		  /*   { */
+		  /*     Pilha_pop(esteira[i]); */
+		  /*   } */
 		}
 	    }
 	}
     }
-  move_block_from_to(esteira, a, a->pos_original);
+
+  clear_blocks_from_top(esteira, a, a->pos_original);
   Pilha_destroy(pl);
   Bloco_destroy(b);
 
@@ -220,7 +221,7 @@ Braco *Braco_create(Arquivo *arquivo)
       _a = aux_a > -1 && aux_a < br->n ? br->blocos[aux_a] : NULL;
       _b = aux_b > -1 && aux_b < br->n ? br->blocos[aux_b] : NULL;
 
-      Braco_add_instruction(br, Execucao_create(_a, _b, _f));
+      Braco_add_instruction(br, Execucao_create(_a, _b, _f, lin));
     }
 
   return br;
@@ -239,7 +240,7 @@ void Braco_process_start(Braco *braco)
     {
       Execucao *ex = Fila_dequeue(braco->instrucoes);
       es = Execucao_process(ex, braco->n, braco->posicoes);
-      printf("::: %2d ::: %s\n", ++i, status_descr[es]);
+      printf("::: %2d ::: %s \"%s\"\n", ++i, status_descr[es], ex->texto);
     }
   printf("Fim do processamento.\n");
 }

@@ -13,9 +13,10 @@ typedef struct Execucao
   Bloco *a;
   Bloco *b;
   funcao_exec fx;
+  char *texto;
 } Execucao;
 
-Execucao *Execucao_create(Bloco *a, Bloco *b, funcao_exec fx);
+Execucao *Execucao_create(Bloco *a, Bloco *b, funcao_exec fx, char *tx);
 exec_status Execucao_process(Execucao *execucao, int n, Pilha **esteira);
 void Execucao_destroy(Execucao *execucao);
 
