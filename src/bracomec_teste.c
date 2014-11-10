@@ -33,18 +33,9 @@ int main(int argc, char *argv[])
   retorno = 0;
 
  error: /* fallthrough proposital */
-  if(a)
-    {
-      Arquivo_destroy(a);
-    }
-  if(b)
-    {
-      Arquivo_destroy(b);
-    }
-  if(braco)
-    {
-      Braco_destroy(braco);
-    }
+  Arquivo_destroy(a);
+  Arquivo_destroy(b);
+  Braco_destroy(braco);
 
   printf("Programa encerrado.\n");
   return retorno;

@@ -44,19 +44,18 @@ void move_block_from_to(Pilha **esteira, Bloco *bloco, int destino)
 
 void clear_blocks_from_top(Pilha **esteira, Bloco *bloco, int destino)
 {
-  Bloco *aux = Pilha_pop(esteira[bloco->pos_atual]);
-  aux = aux != NULL ? aux : bloco;
-  char f_nome[30];
-  sprintf(f_nome, "debug_%d_%d.log", bloco->valor, aux->valor);
-  FILE *f = fopen(f_nome, "w");
-  fprintf(f, "---> b: %d\taux: %d | %d\n", bloco->valor, aux->valor, destino);
-  fclose(f);
-  while(aux->valor != bloco->valor)
+  int n_esteira = bloco->pos_atual;
+  Bloco *aux = Pilha_pop(esteira[n_esteira]);
+
+  if(aux->valor != bloco->valor)
     {
+      Pilha_push(esteira[n_esteira], aux);
       clear_blocks_from_top(esteira, aux, aux->pos_original);
     }
-
-  move_block_from_to(esteira, aux, destino);    
+  else
+    {
+      move_block_from_to(esteira, aux, destino);    
+    }
 }
 
 exec_status move_a_over_b(int n_esteira, Pilha **esteira, Bloco *a, Bloco *b)
@@ -117,11 +116,46 @@ exec_status stack_a_top_b(int n_esteira, Pilha **esteira, Bloco *a, Bloco *b)
 
   return OK;
 }
-/* Argumentos apenas para uso de ponteiro */
+
 exec_status find_greatest(int n_esteira, Pilha **esteira, Bloco *a, Bloco *b)
 {
-  return EXIT;
+  int i, j, highest = 0, greatest = 0;
+  Pilha *pl = Pilha_create();
+  a = Bloco_create(0);
+  b = a;
+  for(i = 0; i < n_esteira; i++)
+    {
+      if((j = Pilha_size(esteira[i])) > highest)
+	{
+	  highest = j;
+	  greatest = 0;
+	  if(Pilha_has_greater(esteira[i], a, compare_block_stack))
+	    {
+	      while(Pilha_size(esteira[i]))
+		{
+		  if(((Bloco *)Pilha_pop_to(esteira[i], pl))->valor > greatest)
+		    {
+		      a = Pilha_stacktop(pl);
+		      greatest = a->valor;
+		    }
+		}
+	      while(Pilha_size(pl))
+		{
+		  if(greatest == ((Bloco *)Pilha_pop_to(pl, esteira[i]))->valor)
+		    {
+		      Pilha_pop(esteira[i]);
+		    }
+		}
+	    }
+	}
+    }
+  move_block_from_to(esteira, a, a->pos_original);
+  Pilha_destroy(pl);
+  Bloco_destroy(b);
+
+  return OK;
 }
+
 /* Argumentos apenas para uso de ponteiro */
 exec_status process_exit(int n_esteira, Pilha **esteira, Bloco *a, Bloco *b)
 {
@@ -136,7 +170,6 @@ Braco *Braco_create(Arquivo *arquivo)
       return NULL;
     }
   Braco *br = calloc(1, sizeof(Braco));
-  br->auxiliar = Pilha_create();
   br->n = n_bloco;
   for(i = 0; i < n_bloco; i++)
     {
@@ -215,21 +248,22 @@ int Braco_write(Braco *braco, Arquivo *arquivo)
 {
   char aux[MAX_ARQ_LIN_COL], aux2[MAX_ARQ_LIN_COL], *saida = "out.txt";
   int i;
+  Pilha *pl = Pilha_create();
   for(i = 0; i < braco->n; i++)
     {
       sprintf(aux, "%d:", i);
       while(!Pilha_is_empty(braco->posicoes[i]))
 	{
-	  Pilha_push(braco->auxiliar, Pilha_pop(braco->posicoes[i]));
+	  Pilha_pop_to(braco->posicoes[i], pl);
 	}
-      while(!Pilha_is_empty(braco->auxiliar))
+      while(!Pilha_is_empty(pl))
 	{
-	  sprintf(aux2, " %d", *(int *)Pilha_pop(braco->auxiliar));
+	  sprintf(aux2, " %d", *(int *)Pilha_pop(pl));
 	  strcat(aux, aux2);
 	}
       Arquivo_append_line(arquivo, aux);
     }
-
+  Pilha_destroy(pl);
   return Arquivo_write_to(arquivo, saida);
 }
 
@@ -245,8 +279,11 @@ void Braco_destroy(Braco *braco)
     {
       Pilha_destroy(braco->posicoes[i]);
     }
-  Pilha_destroy(braco->auxiliar);
-  Fila_clear_destroy(braco->instrucoes);
+  while(!Fila_is_empty(braco->instrucoes))
+    {
+      Bloco_destroy(Fila_dequeue((braco->instrucoes)));
+    }
+  Fila_destroy(braco->instrucoes);
 
   free(braco);
 }

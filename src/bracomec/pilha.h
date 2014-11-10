@@ -25,6 +25,9 @@ void *Pilha_pop(Pilha *pilha);
 /* Insere elemento no topo */
 void Pilha_push(Pilha *pilha, void *valor);
 
+/* Pilha_pop seguido de Pilha_push */
+void *Pilha_pop_to(Pilha *pilha_origem, Pilha *pilha_destino);
+
 int Pilha_is_empty(Pilha *pilha);
 
 void Pilha_each(Pilha *pilha, funcao_each fe);

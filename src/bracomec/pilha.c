@@ -79,6 +79,13 @@ void Pilha_push(Pilha *pilha, void *valor)
   Lista_unshift(pilha->base, valor);
 }
 
+void *Pilha_pop_to(Pilha *pilha_origem, Pilha *pilha_destino)
+{
+  void *el = Pilha_pop(pilha_origem);
+  Pilha_push(pilha_destino, el);
+  return el;
+}
+
 int Pilha_is_empty(Pilha *pilha)
 {
   return Lista_size(pilha->base) == 0;
