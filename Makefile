@@ -7,6 +7,7 @@ SOURCES = $(wildcard src/bracomec/*.c)
 OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
 
 bin/$(MAIN): src/$(MAIN)_teste.c $(OBJECTS)
+	@mkdir -p bin
 	$(CC) $(CFLAGS) -I./src/$(MAIN) -o $@ $< $(OBJECTS)
 
 clean:
